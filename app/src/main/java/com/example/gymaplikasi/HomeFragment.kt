@@ -14,11 +14,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.gymaplikasi.data.AppDatabase
 import com.example.gymaplikasi.data.GymLog
-import com.example.gymaplikasi.utils.UserPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
+import com.example.gymaplikasi.utils.UserPreferences
 
 class HomeFragment : Fragment() {
 
