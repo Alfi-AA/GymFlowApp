@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Ikon Rumah (Geser ke atas sedikit biar muat titiknya) -->    <item android:bottom="8dp">
+    <drawable
+        android:src="@drawable/ic_home"
+        android:tint="@color/gym_primary" />
+</item>
+
+    <!-- Titik Indikator (Di bawah, tengah) -->
+    <item android:gravity="bottom|center_horizontal"
+        android:width="4dp"
+        android:height="4dp"
+        android:bottom="0dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/gym_primary"/>
+        </shape>
+    </item>
+</layer-list>

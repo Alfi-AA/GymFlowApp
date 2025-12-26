@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- GymFlow Palette -->
+    <color name="gym_background">#1E2510</color> <!-- Hitam Hijau -->
+    <color name="gym_surface">#1E1E1E</color>     <!-- Abu Gelap Card -->
+    <color name="gym_primary">#B1EE2E</color>     <!-- Neon Lime -->
+    <color name="gym_text_secondary">#B0B0B0</color>
+    <color name="gym_input_bg">#2C2C2C</color>
+    <color name="gym_primary_transparent">#33A4F822</color>
+</resources>

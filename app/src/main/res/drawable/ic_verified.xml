@@ -1,0 +1,15 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="112dp"
+    android:height="112dp"
+    android:viewportWidth="112"
+    android:viewportHeight="112">
+    <path
+        android:fillColor="#FFB1EE2E"
+        android:pathData="M55.83 8.83A47 47 0 1 0 55.83 102.83 47 47 0 1 0 55.83 8.83z"/>
+    <path
+        android:fillColor="@color/gym_surface"
+        android:pathData="M55.83 0C25.05 0 0 25.05 0 55.83c0 30.79 25.05 55.84 55.83 55.84 30.79 0 55.84-25.05 55.84-55.84C111.67 25.05 86.62 0 55.83 0Zm0 100.5c-24.63 0-44.66-20.04-44.66-44.67 0-24.63 20.03-44.66 44.66-44.66 24.63 0 44.67 20.03 44.67 44.66 0 24.63-20.04 44.67-44.67 44.67Z"/>
+    <path
+        android:fillColor="@color/gym_surface"
+        android:pathData="M62.35 41.57L51.61 57.68l-2.65-3.19c-1.98-2.36-5.5-2.68-7.87-0.71-2.37 1.97-2.69 5.5-0.71 7.87l7.44 8.93c1.06 1.27 2.64 2 4.29 2h0.3c1.76-0.1 3.37-1.02 4.34-2.48l14.9-22.34c1.7-2.56 1.02-6.03-1.55-7.74-2.58-1.71-6.04-1.01-7.75 1.55Z"/>
+</vector>

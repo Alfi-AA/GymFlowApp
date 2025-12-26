@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Warna dasar putih (nanti diwarnai hijau lewat backgroundTint) -->
+    <solid android:color="#FFFFFF"/>
+
+    <!-- Radius besar = Bentuk Kapsul/Pil Sempurna -->
+    <corners android:radius="100dp"/>
+</shape>
