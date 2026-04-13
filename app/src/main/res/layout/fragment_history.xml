@@ -134,24 +134,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Recent History"
+                android:text="Recent History (7 Days)"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <Spinner
+                android:id="@+id/spinnerFilterMuscle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SEE ALL"
-                android:textColor="@color/gym_primary"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:backgroundTint="@color/gym_primary" />
         </LinearLayout>
 
         <!-- RECYCLER VIEW -->

@@ -56,7 +56,7 @@
                         android:id="@+id/tvTargetWeight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Target BW: 75 kg"
+                        android:text="Target BB: 75 kg"
                         android:textColor="@color/gym_text_secondary"
                         android:textSize="14sp"/>
                 </LinearLayout>
@@ -98,6 +98,7 @@
                     android:background="@drawable/bg_glass_panel"
                     android:padding="12dp"
                     android:layout_marginEnd="16dp"/>
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -106,7 +107,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ACTIVITY SUMMARY"
+                        android:text="RINGKASAN AKTIVITAS"
                         android:textColor="@color/gym_text_secondary"
                         android:textSize="10sp"
                         android:letterSpacing="0.1"
@@ -121,7 +122,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total Set Today: "
+                            android:text="Total Set Hari Ini: "
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:layout_marginEnd="8dp"/>
@@ -171,7 +172,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Log New Set"
+                        android:text="Catat Set Baru"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -189,28 +190,52 @@
                         android:backgroundTint="@color/gym_primary"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="6dp"
-                        android:text="ACTIVE"
+                        android:text="AKTIF"
                         android:textColor="@color/black"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <!-- Input: Spinner Latihan -->
+                <!-- Input: Searchable Dropdown Latihan -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SELECT EXERCISE"
+                    android:text="PILIH ALAT / LATIHAN"
                     android:textColor="@color/gym_text_secondary"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
 
-                <Spinner
-                    android:id="@+id/spinnerExercise"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/menuExercise"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/bg_spinner_custom"
-                    android:layout_marginBottom="16dp"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxBackgroundColor="@color/gym_input_bg"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="1dp"
+                    app:boxStrokeColor="@color/gym_primary"
+                    app:hintEnabled="false"
+                    app:endIconTint="@color/gym_primary">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteExercise"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Cari nama latihan..."
+                        android:inputType="text"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/gym_text_secondary"
+                        android:padding="16dp"
+                        android:textSize="16sp"
+                        android:background="@android:color/transparent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Input Row: Beban & Reps -->
                 <LinearLayout
@@ -231,7 +256,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="WEIGHT"
+                            android:text="BEBAN"
                             android:textColor="@color/gym_text_secondary"
                             android:textSize="12sp"
                             android:textStyle="bold"
@@ -341,7 +366,7 @@
                     android:id="@+id/btnSaveRecord"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:text="Save Record"
+                    android:text="Simpan Set"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="16sp"
@@ -359,7 +384,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 4. FOOTER: TIMER & KCAL -->
+        <!-- 4. FOOTER -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -368,7 +393,7 @@
             android:layout_marginBottom="80dp"
             android:baselineAligned="false">
 
-            <!-- CARD TIMER -->
+            <!-- CARD OTOT TERLUPAKAN -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -385,36 +410,55 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- Icon Timer -->
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_launcher_foreground"
-                        app:tint="#4A90E2"
-                        android:background="@drawable/bg_logo_circle"
-                        android:backgroundTint="#1A4A90E2"
-                        android:padding="6dp"
-                        android:layout_marginBottom="12dp"/>
-
+                    <!-- Icon -->
                     <TextView
-                        android:id="@+id/tvTimer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="01:30"
+                        android:text="FOKUS BERIKUTNYA"
+                        android:textColor="#AAAAAA"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1"
+                        android:layout_marginBottom="12dp"/>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        app:cardBackgroundColor="#2A2A2A"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:id="@+id/ivNeglectedMuscleIcon"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_icon_quad"
+                            app:tint="#FF5252" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:id="@+id/tvNeglectedMuscleName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="QUADS"
                         android:textColor="@color/white"
-                        android:textSize="24sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rest Timer"
-                        android:textColor="@color/gym_text_secondary"
-                        android:textSize="12sp"/>
+                        android:text="Jarang Dilatih"
+                        android:textColor="#FF5252"
+                        android:textSize="12sp"
+                        android:textStyle="italic"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- CARD KCAL -->
+            <!-- CARD LATIHAN TERAKHIR -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -431,32 +475,42 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- Icon Fire -->
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_launcher_foreground"
-                        app:tint="#F5A623"
-                        android:background="@drawable/bg_logo_circle"
-                        android:backgroundTint="#1AF5A623"
-                        android:padding="6dp"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SET TERAKHIR"
+                        android:textColor="#AAAAAA"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1"
                         android:layout_marginBottom="12dp"/>
 
-                    <TextView
-                        android:id="@+id/tvKcal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="320"
-                        android:textColor="@color/white"
-                        android:textSize="24sp"
-                        android:textStyle="bold"/>
+                    <ImageView
+                        android:id="@+id/ivLastWorkoutRank"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/rank_gold"
+                        android:layout_marginBottom="8dp"/>
 
                     <TextView
+                        android:id="@+id/tvLastWorkoutName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Kcal Burned"
-                        android:textColor="@color/gym_text_secondary"
-                        android:textSize="12sp"/>
+                        android:text="Bench Press"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+
+                    <TextView
+                        android:id="@+id/tvLastWorkoutDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="60 kg x 10"
+                        android:textColor="@color/gym_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>

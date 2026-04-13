@@ -1,14 +1,489 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RankingFragment">
+    android:background="@color/gym_background"
+    android:fillViewport="true">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-</FrameLayout>
+        <!-- Header Section -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ranking Beban"
+                    android:textColor="@color/white"
+                    android:textSize="28sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Akumulasi total angkatan (kg)"
+                    android:textColor="@color/gym_text_secondary"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <!-- Placeholder Icon (Dumbbell) -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                app:cardBackgroundColor="#1A1D16"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@android:drawable/ic_menu_manage"
+                    app:tint="#B1EE2E" />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <!-- Main Card Section -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/gym_surface"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="KATEGORI"
+                    android:textColor="@color/gym_text_secondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.1"/>
+
+                <!-- Dropdown / Spinner Placeholder -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="20dp"
+                    app:cardBackgroundColor="#252820"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/tvSelectedCategory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Upper Body"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_alignParentEnd="true"
+                            android:src="@android:drawable/arrow_down_float"
+                            app:tint="#B1EE2E" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Radar Chart -->
+                <com.github.mikephil.charting.charts.RadarChart
+                    android:id="@+id/radarChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    android:layout_gravity="center" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="@color/gym_surface"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MUSCLE HEATMAP"
+                    android:textColor="@color/gym_text_secondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.1"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp">
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_body_front_male_base"/>
+
+                        <ImageView
+                            android:id="@+id/ivShouldersMuscleFront"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_muscle_front_male_shoulders"
+                            app:tint="@color/rank_gold" />
+
+                        <ImageView
+                            android:id="@+id/ivBicepsMuscle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_muscle_front_male_biceps"
+                            app:tint="@color/rank_mythril" />
+
+                        <ImageView
+                            android:id="@+id/ivTricepsMuscleFront"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_muscle_front_male_triceps"
+                            app:tint="@color/rank_mythril" />
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/ivForearmsMuscleFront"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:src="@drawable/ic_muscle_front_male_forearms"-->
+<!--                            app:tint="@color/rank_mythril" />-->
+
+                        <ImageView
+                            android:id="@+id/ivChestMuscle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_muscle_front_male_chest"
+                            app:tint="@color/rank_gold" />
+
+                        <ImageView
+                            android:id="@+id/ivAbsMuscle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_muscle_front_male_abs"
+                            app:tint="@color/rank_gold" />
+
+                        <ImageView
+                            android:id="@+id/ivQuadsMuscleFront"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_muscle_front_male_quads"
+                            app:tint="@color/rank_gold" />
+
+                        <ImageView
+                            android:id="@+id/ivCalvesMuscleFront"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_muscle_front_male_calves"
+                            app:tint="@color/rank_gold" />
+
+                    </FrameLayout>
+                    
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_body_back_male_base"/>
+
+                        <ImageView
+                            android:id="@+id/ivBackMuscle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_muscle_back_male_back"
+                            app:tint="@color/rank_silver" />
+
+                        <ImageView
+                            android:id="@+id/ivShouldersMuscleBack"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_muscle_back_male_shoulders"
+                            app:tint="@color/rank_platinum" />
+
+                        <ImageView
+                            android:id="@+id/ivTricepsMuscleBack"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_muscle_back_male_triceps"
+                            app:tint="@color/rank_platinum" />
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/ivForearmsMuscleBack"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:src="@drawable/ic_muscle_back_male_forearm"-->
+<!--                            app:tint="@color/rank_platinum" />-->
+
+                        <ImageView
+                            android:id="@+id/ivQuadsMuscleBack"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_muscle_back_male_quads"
+                            app:tint="@color/rank_bronze" />
+
+                        <ImageView
+                            android:id="@+id/ivGlutesMuscle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_muscle_back_male_glutes"
+                            app:tint="@color/rank_bronze" />
+
+                        <ImageView
+                            android:id="@+id/ivHamstringMuscle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_muscle_back_male_hamstring"
+                            app:tint="@color/rank_bronze" />
+
+                        <ImageView
+                            android:id="@+id/ivCalvesMuscleBack"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_muscle_back_male_calves"
+                            app:tint="@color/rank_bronze" />
+
+                    </FrameLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="30dp"
+            app:cardBackgroundColor="@color/gym_surface"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/rank_bronze" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Bronze"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/rank_silver" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Silver"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/rank_gold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Gold"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="24dp"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/rank_platinum" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Platinum"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/rank_adamantium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Adamantium"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/rank_mythril" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Mythril"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="Detail Progres Otot"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMuscleProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_muscle_header" />
+
+    </LinearLayout>
+</ScrollView>

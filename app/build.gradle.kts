@@ -34,6 +34,10 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -54,4 +58,8 @@ dependencies {
 
     // MPAndroidChart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    // ViewModelScope
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
 }

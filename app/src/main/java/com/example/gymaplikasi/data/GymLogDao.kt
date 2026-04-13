@@ -56,4 +56,11 @@ interface GymLogDao {
     // Mengambil daftar nama latihan yang pernah dilakukan untuk filter
     @Query("SELECT DISTINCT exercise FROM gym_logs ORDER BY exercise ASC")
     fun getUniqueExerciseNames(): Flow<List<String>>
+
+
+    // --- QUERY UNTUK RANKING (RADAR CHART) ---
+
+    // Mengambil beban tertinggi (Personal Record) dari suatu latihan spesifik
+    @Query("SELECT MAX(weight) FROM gym_logs WHERE exercise = :exerciseName")
+    suspend fun getMaxWeightForExercise(exerciseName: String): Int?
 }

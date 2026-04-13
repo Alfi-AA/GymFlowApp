@@ -52,6 +52,8 @@ class HistoryAdapter(private var logList: List<GymLog>) :
 
     override fun getItemCount(): Int = logList.size
 
+    fun getItem(position: Int): GymLog = logList[position]
+
     // Fungsi untuk update data dari Fragment/Database
     fun updateData(newLogs: List<GymLog>) {
         logList = newLogs

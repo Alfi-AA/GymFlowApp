@@ -1,6 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gym_surface"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="12dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvMuscleIcon"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="12dp"
+        app:cardBackgroundColor="#2A2A2A"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/vHeaderDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivMuscleIcon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            tools:src="@drawable/ic_icon_chest"
+            app:tint="#888888" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tvMuscleName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="sans-serif-black"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/pbMuscleProgress"
+        app:layout_constraintEnd_toStartOf="@+id/llRankBadge"
+        app:layout_constraintStart_toEndOf="@+id/cvMuscleIcon"
+        app:layout_constraintTop_toTopOf="@+id/cvMuscleIcon"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Dada" />
+
+    <LinearLayout
+        android:id="@+id/llRankBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_rounded_card"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvMuscleName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvMuscleName">
+
+        <ImageView
+            android:id="@+id/ivRankIconHeader"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            tools:src="@drawable/rank_gold" />
+
+        <TextView
+            android:id="@+id/tvRankNameHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="Gold"
+            tools:textColor="@color/rank_gold" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pbMuscleProgress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="6dp"
+        android:layout_marginTop="8dp"
+        android:max="100"
+        android:progressDrawable="@drawable/custom_progress_bar"
+        app:layout_constraintBottom_toBottomOf="@+id/cvMuscleIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvMuscleName"
+        app:layout_constraintTop_toBottomOf="@+id/tvMuscleName"
+        tools:progress="60"
+        tools:progressTint="@color/rank_gold" />
+
+    <View
+        android:id="@+id/vHeaderDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#333333"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

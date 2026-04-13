@@ -10,4 +10,13 @@
     <color name="gym_text_secondary">#B0B0B0</color>
     <color name="gym_input_bg">#2C2C2C</color>
     <color name="gym_primary_transparent">#33A4F822</color>
+
+    <!-- GymFlow Ranking -->
+    <color name="rank_unranked">#00000000</color>
+    <color name="rank_bronze">#A97142</color>
+    <color name="rank_silver">#9CA3AF</color>
+    <color name="rank_gold">#D4AF37</color>
+    <color name="rank_platinum">#52A43C</color>
+    <color name="rank_adamantium">#6B21A8</color>
+    <color name="rank_mythril">#DC2626</color>
 </resources>

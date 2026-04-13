@@ -43,13 +43,70 @@ abstract class AppDatabase : RoomDatabase() {
                 val dao = getDatabase(context).gymLogDao()
 
                 val initialData = listOf(
-                    Exercise(name = "Bench Press"),
-                    Exercise(name = "Squat"),
-                    Exercise(name = "Deadlift"),
-                    Exercise(name = "Pull Up"),
+                    // =======================
+                    // UPPER BODY
+                    // =======================
+
+                    // Chest
+                    Exercise(name = "Barbell Bench Press"),
+                    Exercise(name = "Incline Bench Press"),
+                    Exercise(name = "Pec Deck Fly"),
+                    Exercise(name = "Cable Crossover"),
+
+                    // Shoulder
                     Exercise(name = "Shoulder Press"),
-                    Exercise(name = "Bicep Curl"),
-                    Exercise(name = "Leg Press")
+                    Exercise(name = "Lateral Raise"),
+                    Exercise(name = "Rear Delt Fly"),
+
+                    // Bicep
+                    Exercise(name = "Barbell Bicep Curl"),
+                    Exercise(name = "Dumbbell Bicep Curl"),
+                    Exercise(name = "Hammer Curl"),
+                    Exercise(name = "Cross-Body Hammer Curl"),
+
+                    // Tricep
+                    Exercise(name = "Rope Tricep Pushdown"),
+                    Exercise(name = "Straight Bar Pushdown"),
+                    Exercise(name = "Skullcrusher"),
+                    Exercise(name = "Weighted Tricep Dip"),
+
+                    // Back
+                    Exercise(name = "Weighted Pull Up"),
+                    Exercise(name = "Deadlift"),
+                    Exercise(name = "Cable Lat Pulldown"),
+                    Exercise(name = "Seated Cable Row"),
+                    Exercise(name = "One-Arm Dumbbell Row"),
+                    Exercise(name = "Barbell Row"),
+
+                    // Abs
+                    Exercise(name = "Weighted Sit Up"),
+                    Exercise(name = "Machine Crunch"),
+                    Exercise(name = "Cable Crunch"),
+
+                    // =======================
+                    // LOWER BODY
+                    // =======================
+
+                    // Quads
+                    Exercise(name = "Barbell Squat"),
+                    Exercise(name = "Smith Machine Squat"),
+                    Exercise(name = "Leg Press"),
+                    Exercise(name = "Leg Extension"),
+                    Exercise(name = "Bulgarian Split Squat"),
+
+                    // Hamstrings
+                    Exercise(name = "Romanian Deadlift"),
+                    Exercise(name = "Lying Leg Curl"),
+                    Exercise(name = "Seated Leg Curl"),
+
+                    // Glutes
+                    Exercise(name = "Barbell Hip Thrust"),
+                    Exercise(name = "Cable Glute Kickback"),
+                    Exercise(name = "Glute Bridge"),
+
+                    // Calves
+                    Exercise(name = "Standing Calf Raise"),
+                    Exercise(name = "Seated Calf Raise")
                 )
                 dao.insertAllExercises(initialData)
             }

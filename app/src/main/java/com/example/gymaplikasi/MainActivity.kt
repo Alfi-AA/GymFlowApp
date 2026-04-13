@@ -28,6 +28,10 @@ class MainActivity : AppCompatActivity() {
                     replaceFragment(HistoryFragment())
                     true
                 }
+                R.id.nav_ranking -> {
+                    replaceFragment(RankingFragment())
+                    true
+                }
                 R.id.nav_profile -> {
                      replaceFragment(ProfileFragment())
                     true

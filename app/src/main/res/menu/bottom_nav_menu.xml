@@ -12,6 +12,11 @@
         android:title="HISTORY" />
 
     <item
+        android:id="@+id/nav_ranking"
+        android:icon="@drawable/ic_ranking"
+        android:title="RANKING"/>
+
+    <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_person"
         android:title="PROFILE" />
