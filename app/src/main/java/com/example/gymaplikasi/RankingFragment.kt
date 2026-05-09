@@ -43,26 +43,31 @@ class RankingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Inisialisasi ViewModel (Pakai Factory karena butuh DAO)
+        // Inisialisasi ViewModel (Pakai Factory karena butuh DAO)
         val dao = AppDatabase.getDatabase(requireContext()).gymLogDao()
         val factory = RankingViewModelFactory(dao)
         viewModel = ViewModelProvider(this, factory)[RankingViewModel::class.java]
 
-        // 2. Setup Tampilan Awal Grafik
+        // Setup Tampilan Awal Grafik
         setupRadarChart()
 
-        // 3. Klik Dropdown untuk ganti kategori
+        // Klik Dropdown untuk ganti kategori
         binding.tvSelectedCategory.parent.let { layout ->
             (layout as View).setOnClickListener { showCategoryDropdown(layout) }
         }
 
-        // 4. Observasi Data dari ViewModel
+        // Observasi Data dari ViewModel
         observeData()
+        val userPreferences = com.example.gymaplikasi.utils.UserPreferences(requireContext())
+        val userGender = userPreferences.getGender() ?: "Male"
 
-        // 5. Jalankan Kalkulasi
-        viewModel.calculateScores()
+        // Muscle heatmap sesuai gender
+        setupHeatmapGender(userGender)
 
-        // 6. list ranking
+        // Jalankan Kalkulasi
+        viewModel.calculateScores(userGender)
+
+        // list ranking
         setupRecyclerView()
     }
 
@@ -91,6 +96,31 @@ class RankingFragment : Fragment() {
             }
 
             legend.isEnabled = false
+        }
+    }
+
+    private fun setupHeatmapGender(gender: String) {
+        if (gender == "Female" || gender == "Wanita") {
+            binding.ivBodyBaseFront.setImageResource(R.drawable.ic_body_front_female_base)
+            binding.ivBodyBaseBack.setImageResource(R.drawable.ic_body_back_female_base)
+
+            // ganti otot depan
+            binding.ivAbsMuscle.setImageResource(R.drawable.ic_muscle_front_female_abs)
+            binding.ivBicepsMuscle.setImageResource(R.drawable.ic_muscle_front_female_biceps)
+            binding.ivCalvesMuscleFront.setImageResource(R.drawable.ic_muscle_front_female_calves)
+            binding.ivChestMuscle.setImageResource(R.drawable.ic_muscle_front_female_chest)
+            binding.ivQuadsMuscleFront.setImageResource(R.drawable.ic_muscle_front_female_quads)
+            binding.ivShouldersMuscleFront.setImageResource(R.drawable.ic_muscle_front_female_shoulders)
+            binding.ivTricepsMuscleFront.setImageResource(R.drawable.ic_muscle_front_female_triceps)
+
+            // ganti otot belakang
+            binding.ivBackMuscle.setImageResource(R.drawable.ic_muscle_back_female_back)
+            binding.ivShouldersMuscleBack.setImageResource(R.drawable.ic_muscle_back_female_shoulders)
+            binding.ivTricepsMuscleBack.setImageResource(R.drawable.ic_muscle_back_female_triceps)
+            binding.ivQuadsMuscleBack.setImageResource(R.drawable.ic_muscle_back_female_quads)
+            binding.ivGlutesMuscle.setImageResource(R.drawable.ic_muscle_back_female_glutes)
+            binding.ivHamstringMuscle.setImageResource(R.drawable.ic_muscle_back_female_hamstring)
+            binding.ivCalvesMuscleBack.setImageResource(R.drawable.ic_muscle_back_female_calves)
         }
     }
 

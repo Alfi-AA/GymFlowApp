@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 // Mendefinisikan Database Room dan tabel yang terdaftar (GymLog & Exercise)
-@Database(entities = [GymLog::class, Exercise::class], version = 2, exportSchema = false)
+@Database(entities = [GymLog::class, Exercise::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun gymLogDao(): GymLogDao

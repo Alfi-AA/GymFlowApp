@@ -12,16 +12,22 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.gymaplikasi.data.AppDatabase
 import com.example.gymaplikasi.data.GymLog
 import com.example.gymaplikasi.domain.Muscle
 import com.example.gymaplikasi.domain.exerciseToMuscleMap
+import com.example.gymaplikasi.repository.GymRepository
+import com.example.gymaplikasi.viewmodel.SyncViewModel
+import com.example.gymaplikasi.viewmodel.SyncViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
 import com.example.gymaplikasi.utils.UserPreferences
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeFragment : Fragment() {
 
@@ -42,6 +48,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var db: AppDatabase
     private lateinit var userPreferences: UserPreferences
+    private lateinit var syncViewModel: SyncViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +63,10 @@ class HomeFragment : Fragment() {
         // Inisialisasi Database Room dan UserPreferences
         db = AppDatabase.getDatabase(requireContext())
         userPreferences = UserPreferences(requireContext())
+
+        val repository = GymRepository(db.gymLogDao(), FirebaseFirestore.getInstance())
+        val factory = SyncViewModelFactory(repository)
+        syncViewModel = ViewModelProvider(this, factory)[SyncViewModel::class.java]
 
         // Menghubungkan variabel dengan komponen UI di XML
         tvName = view.findViewById(R.id.tvWelcomeName)
@@ -86,10 +97,9 @@ class HomeFragment : Fragment() {
     private fun setupHeader() {
         val name = userPreferences.getUserName() ?: "User"
         val firstName = name.split(" ")[0]
-        val targetBb = userPreferences.getTargetBb()
 
         tvName.text = "Hello, $firstName!"
-        tvTarget.text = "Target BW: $targetBb kg"
+        tvTarget.text = "Siap latihan hari ini!"
     }
 
     // Mengambil daftar latihan dari database untuk mengisi AutoComplete
@@ -129,6 +139,8 @@ class HomeFragment : Fragment() {
 
     // Memantau jumlah set hari ini secara real-time dari database
     private fun observeTodaySummary() {
+        val myUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
         val calendar = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
@@ -138,7 +150,7 @@ class HomeFragment : Fragment() {
         val startOfDay = calendar.timeInMillis
 
         lifecycleScope.launch {
-            db.gymLogDao().getCountToday(startOfDay).collect { count ->
+            db.gymLogDao().getCountToday(userId = myUserId, startOfDay = startOfDay).collect { count ->
                 tvTotalSet.text = count.toString()
             }
         }
@@ -146,8 +158,11 @@ class HomeFragment : Fragment() {
 
     // LOGIKA LAST WORKOUT DAN MUSCLE NEGLECTED
     private fun observeFooterData() {
+        val myUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val userGender = userPreferences.getGender()
+
         lifecycleScope.launch {
-            db.gymLogDao().getAllLogs().collect { logs ->
+            db.gymLogDao().getAllLogs(userId = myUserId).collect { logs ->
 
                 val lastLog = logs.firstOrNull()
                 if (lastLog != null) {
@@ -156,9 +171,20 @@ class HomeFragment : Fragment() {
                     tvLastWorkoutDetail.text = "$weightText kg x ${lastLog.reps} reps"
 
                     val targetData = exerciseToMuscleMap[lastLog.exercise]
-                    val score = if (targetData != null && targetData.targetMax > 0) {
-                        ((lastLog.weight.toFloat() / targetData.targetMax.toFloat()) * 100).toInt()
+                    val finalTargetMax = if (targetData != null) {
+                        if (userGender == "Female" || userGender == "Wanita") {
+                            targetData.targetMaxFemale.toFloat()
+                        } else {
+                            targetData.targetMaxMale.toFloat()
+                        }
+                    } else {
+                        0f
+                    }
+
+                    val score = if (finalTargetMax > 0) {
+                        ((lastLog.weight.toFloat() / finalTargetMax) * 100).toInt()
                     } else 0
+
                     ivLastWorkoutRank.setImageResource(getRankIconForScore(score))
                 } else {
                     tvLastWorkoutName.text = "Belum Ada"
@@ -204,14 +230,25 @@ class HomeFragment : Fragment() {
             return
         }
 
+        val myUserId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+
         lifecycleScope.launch(Dispatchers.IO) {
-            val newLog = GymLog(exercise = exerciseName, weight = weightStr.toInt(), reps = repsStr.toInt(), date = System.currentTimeMillis())
+            val newLog = GymLog(
+                userId = myUserId,
+                exercise = exerciseName,
+                weight = weightStr.toInt(),
+                reps = repsStr.toInt(),
+                date = System.currentTimeMillis()
+            )
+
             db.gymLogDao().insertGymLog(newLog)
 
             withContext(Dispatchers.Main) {
                 Toast.makeText(requireContext(), "Set Tersimpan! Mantap Bro!", Toast.LENGTH_SHORT).show()
                 etWeight.text.clear()
                 etReps.text.clear()
+
+                syncViewModel.triggerUploadSync(myUserId)
             }
         }
     }
@@ -239,6 +276,46 @@ class HomeFragment : Fragment() {
             in 40..59 -> R.drawable.rank_gold
             in 20..39 -> R.drawable.rank_silver
             else -> R.drawable.rank_bronze
+        }
+    }
+
+    private fun syncUnsyncedLogsToFirebase() {
+        val myUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val firestore = FirebaseFirestore.getInstance()
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            //Cari data di Room yang belum dikirim (isSynced = 0)
+            val unsyncedLogs = db.gymLogDao().getUnsyncedLogs(myUserId)
+
+            if (unsyncedLogs.isEmpty()) return@launch
+
+            val logIdsToUpdate = mutableListOf<Int>()
+
+            //Kirim satu per satu ke Firestore
+            for (log in unsyncedLogs) {
+                val logMap = hashMapOf(
+                    "exercise" to log.exercise,
+                    "weight" to log.weight,
+                    "reps" to log.reps,
+                    "date" to log.date
+                )
+
+                // Struktur Awan: users -> [UID Kamu] -> logs -> [ID_Log]
+                firestore.collection("users").document(myUserId)
+                    .collection("logs").document(log.id.toString())
+                    .set(logMap)
+                    .addOnSuccessListener {
+                        //Kalau sukses terkirim, catat ID-nya
+                        logIdsToUpdate.add(log.id)
+
+                        //Kalau semua udah terkirim, ubah status di Room jadi isSynced = 1
+                        if (logIdsToUpdate.size == unsyncedLogs.size) {
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                db.gymLogDao().markLogsAsSynced(logIdsToUpdate)
+                            }
+                        }
+                    }
+            }
         }
     }
 }

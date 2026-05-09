@@ -11,37 +11,47 @@ class UserPreferences(context: Context) {
     companion object {
         const val KEY_IS_LOGIN = "IS_LOGIN"
         const val KEY_NAME = "NAME"
-        const val KEY_NIM = "NIM"
-        const val KEY_CLASS = "CLASS"
-        const val KEY_TARGET_BB = "TARGET_BB"
+        const val KEY_GENDER = "GENDER"
+        const val KEY_DOB = "DOB"
+        const val KEY_WEIGHT = "WEIGHT"
+        const val KEY_HEIGHT = "HEIGHT"
     }
 
+
+    // --- Fungsi Login Awal ---
     // Menyimpan data profil user dan mengubah status login menjadi true
-    fun saveUser(name: String, nim: String, kelas: String, targetBb: Float) {
+    fun saveUser(name: String) {
         val editor = preferences.edit()
         editor.putBoolean(KEY_IS_LOGIN, true)
         editor.putString(KEY_NAME, name)
-        editor.putString(KEY_NIM, nim)
-        editor.putString(KEY_CLASS, kelas)
-        editor.putFloat(KEY_TARGET_BB, targetBb)
         editor.apply()
     }
 
-    // Hanya memperbarui target berat badan
-    fun saveTargetWeight(target: Float) {
-        val editor = preferences.edit()
-        editor.putFloat(KEY_TARGET_BB, target)
-        editor.apply()
+    // setter untuk edit profil
+    fun setUserName(name: String) {
+        preferences.edit().putString(KEY_NAME, name).apply()
+    }
+    fun setGender(gender: String) {
+        preferences.edit().putString(KEY_GENDER, gender).apply()
+    }
+    fun setDob(dob: String) {
+        preferences.edit().putString(KEY_DOB, dob).apply()
+    }
+    fun setWeight(weight: String) {
+        preferences.edit().putString(KEY_WEIGHT, weight).apply()
+    }
+    fun setHeight(height: String) {
+        preferences.edit().putString(KEY_HEIGHT, height).apply()
     }
 
-    // Mengambil data user dari penyimpanan
-    fun getUserName(): String? = preferences.getString(KEY_NAME, null)
-    fun getNim(): String? = preferences.getString(KEY_NIM, "-")
-    fun getKelas(): String? = preferences.getString(KEY_CLASS, "-")
+    // --- GETTER untuk load profil ---
+    fun getUserName(): String? = preferences.getString(KEY_NAME, "")
     fun isLoggedIn(): Boolean = preferences.getBoolean(KEY_IS_LOGIN, false)
-    fun getTargetBb(): Float = preferences.getFloat(KEY_TARGET_BB, 0f)
+    fun getGender(): String? = preferences.getString(KEY_GENDER, "Male")
+    fun getDob(): String? = preferences.getString(KEY_DOB, "")
+    fun getWeight(): String? = preferences.getString(KEY_WEIGHT, "")
+    fun getHeight(): String? = preferences.getString(KEY_HEIGHT, "")
 
-    // Menghapus semua data untuk logout
     fun logout() {
         preferences.edit().clear().apply()
     }

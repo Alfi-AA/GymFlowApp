@@ -12,15 +12,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GymAplikasi">
         <activity
-            android:name=".LoginActivity"
+            android:name=".AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="gymflow-49832.firebaseapp.com" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false"/>
+            android:exported="false" />
+        <activity
+            android:name=".OnboardingActivity"
+            android:exported="false" />
     </application>
 </manifest>

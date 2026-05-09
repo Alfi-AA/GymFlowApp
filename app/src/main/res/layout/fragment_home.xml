@@ -44,19 +44,19 @@
                     android:layout_marginTop="4dp">
 
                     <!-- Icon Scale (Ukuran diatur manual disini, misal 16dp) -->
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_scale"
-                        app:tint="@color/gym_primary"
-                        android:layout_marginEnd="6dp"/>
+<!--                    <ImageView-->
+<!--                        android:layout_width="16dp"-->
+<!--                        android:layout_height="16dp"-->
+<!--                        android:src="@drawable/ic_scale"-->
+<!--                        app:tint="@color/gym_primary"-->
+<!--                        android:layout_marginEnd="6dp"/>-->
 
                     <!-- Teks Target (Sudah Bahasa Inggris) -->
                     <TextView
                         android:id="@+id/tvTargetWeight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Target BB: 75 kg"
+                        android:text="Siap latihan hari ini!"
                         android:textColor="@color/gym_text_secondary"
                         android:textSize="14sp"/>
                 </LinearLayout>

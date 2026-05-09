@@ -26,7 +26,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Member Profile"
+                    android:text="Profil Member"
                     android:textColor="@color/white"
                     android:textSize="28sp"
                     android:textStyle="bold" />
@@ -34,12 +34,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Manage personal data &amp; stats"
+                    android:text="Kelola data diri &amp; statistik"
                     android:textColor="#888888"
                     android:textSize="14sp" />
             </LinearLayout>
 
-            <!-- Tombol Settings (Hiasan sesuai desain) -->
+            <!-- Tombol Settings -->
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -60,17 +60,18 @@
             app:strokeColor="#1AFFFFFF"
             app:strokeWidth="1dp">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
                 android:padding="20dp">
 
                 <!-- Avatar Box -->
                 <FrameLayout
+                    android:id="@+id/frameAvatar"
                     android:layout_width="80dp"
-                    android:layout_height="80dp">
+                    android:layout_height="80dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -88,45 +89,106 @@
                         android:src="@drawable/ic_verified"/>
                 </FrameLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tvProfileName"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:orientation="vertical">
+                    android:layout_marginEnd="16dp"
+                    android:text="User Name"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/frameAvatar"
+                    app:layout_constraintTop_toTopOf="@id/frameAvatar"
+                    app:layout_constraintEnd_toStartOf="@id/tvProfileAge" />
 
-                    <TextView
-                        android:id="@+id/tvProfileName"
+                <TextView
+                    android:id="@+id/tvProfileAge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="#DDDDDD"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvProfileName"
+                    app:layout_constraintBottom_toBottomOf="@id/tvProfileName"/>
+
+                <TextView
+                    android:id="@+id/tvProfileGender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="-"
+                    android:textColor="#AAAAAA"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@id/tvProfileName"
+                    app:layout_constraintTop_toBottomOf="@id/tvProfileName" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintStart_toStartOf="@id/tvProfileName"
+                    app:layout_constraintTop_toBottomOf="@id/tvProfileGender">
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="User Name"
-                        android:textColor="@color/white"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvProfileNim"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="NIM: -"
-                        android:textColor="#AAAAAA"
-                        android:textSize="14sp" />
-
-                    <!-- Badge Kelas -->
-                    <TextView
-                        android:id="@+id/tvProfileClass"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
                         android:background="@drawable/bg_glass_panel"
                         android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:text="CLASS -"
-                        android:textColor="#DDDDDD"
-                        android:textSize="10sp"
-                        android:textStyle="bold" />
+                        android:paddingVertical="6dp"
+                        android:layout_marginEnd="8dp">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            app:cardBackgroundColor="@color/gym_primary"
+                            app:cardCornerRadius="4dp"
+                            app:strokeWidth="0dp"
+                            android:layout_marginEnd="6dp"/>
+
+                        <TextView
+                            android:id="@+id/tvProfileWeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 KG"
+                            android:textColor="#DDDDDD"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/bg_glass_panel"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            app:cardBackgroundColor="@color/gym_primary"
+                            app:cardCornerRadius="4dp"
+                            app:strokeWidth="0dp"
+                            android:layout_marginEnd="6dp"/>
+
+                        <TextView
+                            android:id="@+id/tvProfileHeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 CM"
+                            android:textColor="#DDDDDD"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <!-- 2. BMI CALCULATOR CARD -->
@@ -290,11 +352,12 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 3. TARGET SETTING CARD -->
+
+        <!--Edit profile-->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="24dp"
             app:cardBackgroundColor="@color/gym_surface"
             app:cardCornerRadius="24dp"
             app:strokeColor="#1AFFFFFF"
@@ -309,22 +372,21 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
 
-                    <!-- Icon Flag -->
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_flag"
+                        android:src="@drawable/ic_pencil"
                         app:tint="@color/gym_primary"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Target Setting"
+                        android:text="Edit Profil"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -334,44 +396,246 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="UPDATE TARGET WEIGHT (KG)"
-                    android:textColor="#888888"
+                    android:text="NAMA"
+                    android:textColor="@color/gym_primary"
                     android:textSize="10sp"
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/etTargetWeight"
+                    android:id="@+id/etEditName"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:background="@drawable/bg_glass_panel_large"
-                    android:hint="70"
-                    android:inputType="numberDecimal"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_glass_panel_medium"
+                    android:hint="Nama Lengkap"
                     android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:textColor="@color/white"
                     android:textColorHint="#B4B4B4"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:drawableEnd="@drawable/ic_person"
+                    android:drawableTint="#888888" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="GENDER"
+                    android:textColor="@color/gym_primary"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="24dp">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardMale"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_marginEnd="16dp"
+                        app:cardBackgroundColor="#2A2A2A"
+                        app:cardCornerRadius="60dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="2dp"
+                        app:strokeColor="@android:color/transparent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvMaleIcon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="♂"
+                                android:textColor="@color/white"
+                                android:textSize="48sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvMaleText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Male"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardFemale"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        app:cardBackgroundColor="#2A2A2A"
+                        app:cardCornerRadius="60dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="2dp"
+                        app:strokeColor="@android:color/transparent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvFemaleIcon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="♀"
+                                android:textColor="@color/white"
+                                android:textSize="48sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvFemaleText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Female"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="DATE OF BIRTH"
+                    android:textColor="@color/gym_primary"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:hintEnabled="false"
+                    app:boxBackgroundColor="#2A2A2A"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeWidth="0dp"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@android:drawable/ic_menu_today"
+                    app:endIconTint="#888888">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEditDob"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="mm/dd/yyyy"
+                        android:textColorHint="#666666"
+                        android:textColor="@color/white"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:padding="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="BERAT BADAN"
+                            android:textColor="@color/gym_primary"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/etEditWeight"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_glass_panel_medium"
+                            android:hint="0"
+                            android:inputType="numberDecimal"
+                            android:paddingStart="16dp"
+                            android:textColor="@color/white"
+                            android:textColorHint="#B4B4B4"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="TINGGI BADAN"
+                            android:textColor="@color/gym_primary"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/etEditHeight"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_glass_panel_medium"
+                            android:hint="0"
+                            android:inputType="number"
+                            android:paddingStart="16dp"
+                            android:textColor="@color/white"
+                            android:textColorHint="#B4B4B4"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <Button
-                    android:id="@+id/btnSaveTarget"
+                    android:id="@+id/btnSaveProfile"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_marginTop="16dp"
-                    android:text="SAVE TARGET"
-                    android:textColor="@color/gym_text_secondary"
+                    android:layout_marginBottom="12dp"
+                    android:text="SIMPAN PROFIL"
+                    android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="16sp"
-                    android:backgroundTint="@color/black"
+                    android:backgroundTint="@color/gym_primary"
                     app:cornerRadius="12dp"
-                    android:stateListAnimator="@null"
-                    android:elevation="0dp"
-                    app:icon="@drawable/ic_save"
-                    app:iconTint="@color/gym_text_secondary"
-                    app:iconGravity="textStart"
-                    app:iconPadding="8dp"/>
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btnEditProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="EDIT PROFIL"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:backgroundTint="@android:color/transparent"
+                    app:strokeColor="#FFFFFF"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="12dp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 4. LOGOUT BUTTON -->
+        <!-- LOGOUT BUTTON -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"

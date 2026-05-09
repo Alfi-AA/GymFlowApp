@@ -12,6 +12,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,9 @@ import com.example.gymaplikasi.data.AppDatabase
 import com.example.gymaplikasi.data.GymLog
 import com.example.gymaplikasi.domain.Muscle
 import com.example.gymaplikasi.domain.exerciseToMuscleMap
+import com.example.gymaplikasi.repository.GymRepository
+import com.example.gymaplikasi.viewmodel.SyncViewModel
+import com.example.gymaplikasi.viewmodel.SyncViewModelFactory
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -27,6 +31,8 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -42,11 +48,17 @@ class HistoryFragment : Fragment(R.layout.fragment_history){
     private lateinit var tvChartMax: TextView
     private val db by lazy { AppDatabase.getDatabase(requireContext()) }
 
+    private lateinit var syncViewModel: SyncViewModel
+
     private var allLogsForList: List<GymLog> = emptyList()
     private var currentMuscleFilter: String = "All Muscles"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val repository = GymRepository(db.gymLogDao(), FirebaseFirestore.getInstance())
+        val factory = SyncViewModelFactory(repository)
+        syncViewModel = ViewModelProvider(this, factory)[SyncViewModel::class.java]
 
         chart = view.findViewById(R.id.chartHistory)
         spinnerChart = view.findViewById(R.id.spinnerFilterHistory)
@@ -82,14 +94,22 @@ class HistoryFragment : Fragment(R.layout.fragment_history){
 
                 // pop up konfirmasi
                 MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("Delete Workout?")
-                    .setMessage("Are you sure you want to delete ${logToDelete.exercise} (${logToDelete.weight}kg)?")
-                    .setPositiveButton("Delete") { _, _ ->
+                    .setTitle("Hapus Workout?")
+                    .setMessage("Apakah yakin ingin hapus ${logToDelete.exercise} (${logToDelete.weight}kg)?")
+                    .setPositiveButton("Hapus") { _, _ ->
+                        val myUserId = FirebaseAuth.getInstance().currentUser?.uid
+
+                        // hapus di cloud
+                        if (myUserId != null) {
+                            syncViewModel.triggerDeleteSync(myUserId, logToDelete.id)
+                        }
+
+                        // hapus di room
                         lifecycleScope.launch {
                             db.gymLogDao().deleteGymLog(logToDelete)
                         }
                     }
-                    .setNegativeButton("Cancel") { dialog, _ ->
+                    .setNegativeButton("Batal") { dialog, _ ->
                         // BOUNCE BACK (Kembali ke semula)
                         adapter.notifyItemChanged(position)
                         dialog.dismiss()
@@ -141,8 +161,10 @@ class HistoryFragment : Fragment(R.layout.fragment_history){
 
     // Mengambil data 7 hari latihan ke belakang
     private fun loadHistoryList() {
+        val myUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
         lifecycleScope.launch {
-            db.gymLogDao().getAllLogs().collect { logs ->
+            db.gymLogDao().getAllLogs(userId = myUserId).collect { logs ->
                 val sevenDaysInMillis = 7L * 24 * 60 * 60 * 1000
                 val sevenDaysAgo = System.currentTimeMillis() - sevenDaysInMillis
 
@@ -184,8 +206,10 @@ class HistoryFragment : Fragment(R.layout.fragment_history){
 
     // Mengambil nama latihan unik untuk opsi filter di Spinner
     private fun loadSpinnerData() {
+        val myUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
         lifecycleScope.launch {
-            db.gymLogDao().getUniqueExerciseNames().collect { names ->
+            db.gymLogDao().getUniqueExerciseNames(userId = myUserId).collect { names ->
                 if (names.isNotEmpty()) {
                     setupSpinnerAdapter(names)
                 }
@@ -209,8 +233,10 @@ class HistoryFragment : Fragment(R.layout.fragment_history){
 
     // Mengambil data spesifik latihan untuk ditampilkan di grafik
     private fun loadChartData(exerciseName: String) {
+        val myUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
         lifecycleScope.launch {
-            db.gymLogDao().getLogsByExercise(exerciseName).collect { logs ->
+            db.gymLogDao().getLogsByExercise(userId = myUserId, exerciseName = exerciseName).collect { logs ->
                 updateChart(logs)
             }
         }

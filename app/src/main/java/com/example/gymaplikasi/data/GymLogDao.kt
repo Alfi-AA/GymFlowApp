@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GymLogDao {
-    // --- QUERY UNTUK SPINNER LATIHAN ---
-
-    // Mengambil semua jenis latihan untuk ditampilkan di Spinner
+    /// ==========================================
+    // 1. QUERY UNTUK SPINNER LATIHAN
+    // ==========================================
     @Query("SELECT * FROM exercise_table ORDER BY name ASC")
     fun getAllExercises(): Flow<List<Exercise>>
 
@@ -23,9 +23,9 @@ interface GymLogDao {
     suspend fun insertAllExercises(exercises: List<Exercise>)
 
 
-    // --- QUERY UNTUK GYM LOG (RIWAYAT) ---
-
-    // Menyimpan data set latihan baru
+    // ==========================================
+    // 2. QUERY UNTUK GYM LOG
+    // ==========================================
     @Insert
     suspend fun insertGymLog(gymLog: GymLog)
 
@@ -36,31 +36,44 @@ interface GymLogDao {
     suspend fun deleteGymLog(gymLog: GymLog)
 
 
-    // --- QUERY UNTUK DASHBOARD (HOME) ---
+    // ==========================================
+    // 3. QUERY DASHBOARD & HISTORY (TERISOLASI PER USER)
+    // ==========================================
 
-    // Menghitung total set latihan yang dilakukan hari ini
-    @Query("SELECT COUNT(*) FROM gym_logs WHERE date >= :startOfDay")
-    fun getCountToday(startOfDay: Long): Flow<Int>
+    // Menghitung total set HANYA milik user yang sedang login
+    @Query("SELECT COUNT(*) FROM gym_logs WHERE userId = :userId AND date >= :startOfDay")
+    fun getCountToday(userId: String, startOfDay: Long): Flow<Int>
+
+    // Mengambil semua riwayat HANYA milik user yang sedang login
+    @Query("SELECT * FROM gym_logs WHERE userId = :userId ORDER BY date DESC")
+    fun getAllLogs(userId: String): Flow<List<GymLog>>
+
+    // Mengambil data spesifik untuk Grafik HANYA milik user yang sedang login
+    @Query("SELECT * FROM gym_logs WHERE userId = :userId AND exercise = :exerciseName ORDER BY date ASC")
+    fun getLogsByExercise(userId: String, exerciseName: String): Flow<List<GymLog>>
+
+    // Mengambil filter nama latihan HANYA yang pernah dilakukan user yang sedang login
+    @Query("SELECT DISTINCT exercise FROM gym_logs WHERE userId = :userId ORDER BY exercise ASC")
+    fun getUniqueExerciseNames(userId: String): Flow<List<String>>
 
 
-    // --- QUERY UNTUK HISTORY FRAGMENT ---
+    // ==========================================
+    // 4. QUERY UNTUK RANKING / RADAR CHART
+    // ==========================================
 
-    // Mengambil semua riwayat latihan untuk ditampilkan di RecyclerView (Terbaru di atas)
-    @Query("SELECT * FROM gym_logs ORDER BY date DESC")
-    fun getAllLogs(): Flow<List<GymLog>>
+    // Mengambil Personal Record HANYA milik user yang sedang login
+    @Query("SELECT MAX(weight) FROM gym_logs WHERE userId = :userId AND exercise = :exerciseName")
+    suspend fun getMaxWeightForExercise(userId: String, exerciseName: String): Int?
 
-    // Mengambil data spesifik berdasarkan nama latihan untuk Grafik
-    @Query("SELECT * FROM gym_logs WHERE exercise = :exerciseName ORDER BY date ASC")
-    fun getLogsByExercise(exerciseName: String): Flow<List<GymLog>>
+    // ==========================================
+    // 5. MANTRA BARU: UNTUK CLOUD SYNC FIRESTORE
+    // ==========================================
 
-    // Mengambil daftar nama latihan yang pernah dilakukan untuk filter
-    @Query("SELECT DISTINCT exercise FROM gym_logs ORDER BY exercise ASC")
-    fun getUniqueExerciseNames(): Flow<List<String>>
+    // Mengambil data milik user ini yang BELUM di-backup ke awan (isSynced = 0)
+    @Query("SELECT * FROM gym_logs WHERE userId = :userId AND isSynced = 0")
+    suspend fun getUnsyncedLogs(userId: String): List<GymLog>
 
-
-    // --- QUERY UNTUK RANKING (RADAR CHART) ---
-
-    // Mengambil beban tertinggi (Personal Record) dari suatu latihan spesifik
-    @Query("SELECT MAX(weight) FROM gym_logs WHERE exercise = :exerciseName")
-    suspend fun getMaxWeightForExercise(exerciseName: String): Int?
+    // Mengubah status jadi "Sudah di-backup" (isSynced = 1) setelah sukses dikirim
+    @Query("UPDATE gym_logs SET isSynced = 1 WHERE id IN (:logIds)")
+    suspend fun markLogsAsSynced(logIds: List<Int>)
 }

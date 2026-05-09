@@ -10,6 +10,7 @@ import com.example.gymaplikasi.domain.BodyCategory
 import com.example.gymaplikasi.domain.Muscle
 import com.example.gymaplikasi.domain.ProgressListItem
 import com.example.gymaplikasi.domain.exerciseToMuscleMap
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -27,7 +28,9 @@ class RankingViewModel(private val gymLogDao: GymLogDao) : ViewModel() {
     val muscleProgressList: LiveData<List<ProgressListItem.MuscleHeader>> = _muscleProgressList
 
     //2. Fungsi untuk mulai menghitung
-    fun calculateScores() {
+    fun calculateScores(userGender: String) {
+        val myUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
         viewModelScope.launch(Dispatchers.IO) {
             val tempUpperScores = mutableMapOf<Muscle, Int>()
             val tempLowerScores = mutableMapOf<Muscle, Int>()
@@ -47,12 +50,17 @@ class RankingViewModel(private val gymLogDao: GymLogDao) : ViewModel() {
 
                 relatedExercises.forEach { (exerciseName, targetData) ->
                     // Panggil fungsi Dao
-                    val userMaxWeight = gymLogDao.getMaxWeightForExercise(exerciseName) ?: 0
+                    val userMaxWeight = gymLogDao.getMaxWeightForExercise(userId = myUserId, exerciseName = exerciseName) ?: 0
+
+                    val finalTargetMax = if (userGender == "Female") {
+                        targetData.targetMaxFemale.toFloat()
+                    } else {
+                        targetData.targetMaxMale.toFloat()
+                    }
 
                     // Rumus: (Beban Maksimal User / Target Mythril) * 100
-                    if (targetData.targetMax > 0) {
-                        val currentScore =
-                            ((userMaxWeight.toFloat() / targetData.targetMax.toFloat()) * 100).toInt()
+                    if (finalTargetMax > 0) {
+                        val currentScore = ((userMaxWeight.toFloat() / finalTargetMax) * 100).toInt()
 
                         // SISTEM ELIMINASI
                         if (currentScore > highestScoreForThisMuscle) {
@@ -64,7 +72,7 @@ class RankingViewModel(private val gymLogDao: GymLogDao) : ViewModel() {
                             val finalCurrentScore = currentScore.coerceAtMost(100)
 
                             val (nextRankName, nextRankPercent) = getNextRankTarget(finalCurrentScore)
-                            val nextRankKg = ((nextRankPercent / 100f) * targetData.targetMax).toInt()
+                            val nextRankKg = ((nextRankPercent / 100f) * finalTargetMax).toInt()
 
                             childrenList.add(
                                 ProgressListItem.ExerciseChild(

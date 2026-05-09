@@ -161,6 +161,7 @@
                         android:layout_weight="1">
 
                         <ImageView
+                            android:id="@+id/ivBodyBaseFront"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:src="@drawable/ic_body_front_male_base"/>
@@ -229,6 +230,7 @@
                         android:layout_weight="1">
 
                         <ImageView
+                            android:id="@+id/ivBodyBaseBack"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:src="@drawable/ic_body_back_male_base"/>
