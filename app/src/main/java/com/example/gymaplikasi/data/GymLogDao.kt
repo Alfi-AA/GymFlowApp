@@ -56,6 +56,10 @@ interface GymLogDao {
     @Query("SELECT DISTINCT exercise FROM gym_logs WHERE userId = :userId ORDER BY exercise ASC")
     fun getUniqueExerciseNames(userId: String): Flow<List<String>>
 
+    // Mengambil log pada hari tertentu (dari 00:00:00 sampai 23:59:59)
+    @Query("SELECT * FROM gym_logs WHERE userId = :userId AND date >= :startOfDay AND date <= :endOfDay ORDER BY date DESC")
+    fun getLogsByDateRange(userId: String, startOfDay: Long, endOfDay: Long): Flow<List<GymLog>>
+
 
     // ==========================================
     // 4. QUERY UNTUK RANKING / RADAR CHART

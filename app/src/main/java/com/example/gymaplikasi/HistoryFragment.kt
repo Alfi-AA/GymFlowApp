@@ -2,8 +2,6 @@ package com.example.gymaplikasi
 
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -38,6 +36,20 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+// === IMPORT KHUSUS KALENDER ===
+import com.kizitonwose.calendar.core.CalendarDay
+import com.kizitonwose.calendar.core.DayPosition
+import com.kizitonwose.calendar.core.daysOfWeek
+import com.kizitonwose.calendar.view.CalendarView
+import com.kizitonwose.calendar.view.MonthDayBinder
+import com.kizitonwose.calendar.view.MonthScrollListener
+import com.kizitonwose.calendar.view.ViewContainer
+import java.time.LocalDate
+import java.time.YearMonth
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.temporal.WeekFields
+
 class HistoryFragment : Fragment(R.layout.fragment_history){
 
     private lateinit var chart: LineChart
@@ -49,6 +61,17 @@ class HistoryFragment : Fragment(R.layout.fragment_history){
     private val db by lazy { AppDatabase.getDatabase(requireContext()) }
 
     private lateinit var syncViewModel: SyncViewModel
+
+    // Variabel Kalender
+    private lateinit var calendarView: CalendarView
+    private lateinit var tvMonthYear: TextView
+    private lateinit var btnPrevMonth: TextView
+    private lateinit var btnNextMonth: TextView
+    private lateinit var tvListHeaderTitle: TextView
+
+    // State Kalender (Hari ini sebagai default)
+    private var selectedDate: LocalDate = LocalDate.now()
+    private val today = LocalDate.now()
 
     private var allLogsForList: List<GymLog> = emptyList()
     private var currentMuscleFilter: String = "All Muscles"
@@ -66,13 +89,127 @@ class HistoryFragment : Fragment(R.layout.fragment_history){
         rvHistory = view.findViewById(R.id.rvHistory)
         tvChartMax = view.findViewById(R.id.tvChartMax)
 
+        // Init View Kalender
+        calendarView = view.findViewById(R.id.calendarView)
+        tvMonthYear = view.findViewById(R.id.tvMonthYear)
+        btnPrevMonth = view.findViewById(R.id.btnPrevMonth)
+        btnNextMonth = view.findViewById(R.id.btnNextMonth)
+        tvListHeaderTitle = view.findViewById(R.id.tvListHeaderTitle)
+
         setupRecyclerView()
         setupChartDesign()
         setupSwipeToDelete()
 
         loadSpinnerData()
         setupMuscleSpinner()
-        loadHistoryList()
+
+        setupCalendar()
+    }
+
+    // LOGIKA KALENDER KIZITONWOSE
+    private fun setupCalendar() {
+        // Definisikan Kelas Pembungkus Hari
+        class DayViewContainer(view: View) : ViewContainer(view) {
+            val textView = view.findViewById<TextView>(R.id.tvDayText)
+            val cardView =
+                view.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardDay)
+            lateinit var day: CalendarDay
+
+            init {
+                view.setOnClickListener {
+                    if (day.position == DayPosition.MonthDate) {
+                        val oldDate = selectedDate
+                        selectedDate = day.date
+                        // Refresh UI untuk tanggal lama dan tanggal baru yang diklik
+                        calendarView.notifyDateChanged(oldDate)
+                        calendarView.notifyDateChanged(selectedDate)
+
+                        // Tarik data dari database untuk tanggal ini
+                        loadLogsForSelectedDate()
+                    }
+                }
+            }
+        }
+
+        //Terapkan logika UI ke DayBinder
+        calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
+            override fun create(view: View) = DayViewContainer(view)
+            override fun bind(container: DayViewContainer, day: CalendarDay) {
+                container.day = day
+                container.textView.text = day.date.dayOfMonth.toString()
+
+                if (day.position == DayPosition.MonthDate) {
+                    container.textView.visibility = View.VISIBLE
+                    when (day.date) {
+                        selectedDate -> {
+                            container.cardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.gym_primary))
+                            container.textView.setTextColor(Color.BLACK)
+                        }
+                        today -> {
+                            container.cardView.setCardBackgroundColor(Color.parseColor("#333333"))
+                            container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gym_primary))
+                        }
+                        else -> {
+                            container.cardView.setCardBackgroundColor(Color.TRANSPARENT)
+                            container.textView.setTextColor(Color.WHITE)
+                        }
+                    }
+                } else {
+                    // Sembunyikan tanggal dari bulan sebelumnya/selanjutnya agar bersih
+                    container.textView.visibility = View.INVISIBLE
+                }
+            }
+        }
+
+        // Update Judul Bulan saat di-scroll
+        calendarView.monthScrollListener = object : MonthScrollListener {
+            override fun invoke(month: com.kizitonwose.calendar.core.CalendarMonth) {
+                val titleFormatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault())
+                tvMonthYear.text = titleFormatter.format(month.yearMonth)
+            }
+        }
+
+        // Inisialisasi Rentang Kalender
+        val currentMonth = YearMonth.now()
+        val startMonth = currentMonth.minusMonths(12) // Mundur 1 tahun
+        val endMonth = currentMonth.plusMonths(12)    // Maju 1 tahun
+        val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
+
+        calendarView.setup(startMonth, endMonth, firstDayOfWeek)
+        calendarView.scrollToMonth(currentMonth)
+
+        // Tombol Navigasi Bulan
+        btnNextMonth.setOnClickListener {
+            val nextMonth = calendarView.findFirstVisibleMonth()?.yearMonth?.plusMonths(1)
+            nextMonth?.let { calendarView.smoothScrollToMonth(it) }
+        }
+        btnPrevMonth.setOnClickListener {
+            val prevMonth = calendarView.findFirstVisibleMonth()?.yearMonth?.minusMonths(1)
+            prevMonth?.let { calendarView.smoothScrollToMonth(it) }
+        }
+
+        // Tarik data untuk hari ini saat pertama kali dibuka
+        loadLogsForSelectedDate()
+    }
+
+    // LOGIKA TARIK DATA BERDASARKAN TANGGAL KALENDER
+    private fun loadLogsForSelectedDate() {
+        val myUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.getDefault())
+        tvListHeaderTitle.text = "Latihan: ${dateFormatter.format(selectedDate)}"
+
+        // Ubah localDate jadi Milisecond untuk room DB
+        val zoneId = ZoneId.systemDefault()
+        val startOfDay = selectedDate.atStartOfDay(zoneId).toInstant().toEpochMilli()
+        val endOfDay = selectedDate.plusDays(1).atStartOfDay(zoneId).toInstant().toEpochMilli() - 1
+
+        lifecycleScope.launch {
+            db.gymLogDao().getLogsByDateRange(myUserId, startOfDay, endOfDay).collect { logs ->
+                allLogsForList = logs
+                applyListFilter() // Terapkan ulang filter otot (jika ada)
+            }
+        }
     }
 
     // Menyiapkan RecyclerView untuk daftar riwayat
@@ -156,23 +293,6 @@ class HistoryFragment : Fragment(R.layout.fragment_history){
         }
 
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rvHistory)
-    }
-
-
-    // Mengambil data 7 hari latihan ke belakang
-    private fun loadHistoryList() {
-        val myUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-
-        lifecycleScope.launch {
-            db.gymLogDao().getAllLogs(userId = myUserId).collect { logs ->
-                val sevenDaysInMillis = 7L * 24 * 60 * 60 * 1000
-                val sevenDaysAgo = System.currentTimeMillis() - sevenDaysInMillis
-
-                allLogsForList = logs.filter { it.date >= sevenDaysAgo }
-
-                applyListFilter()
-            }
-        }
     }
 
     private fun setupMuscleSpinner() {

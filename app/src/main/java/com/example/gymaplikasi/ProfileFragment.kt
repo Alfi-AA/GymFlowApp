@@ -20,6 +20,7 @@ import com.example.gymaplikasi.utils.UserPreferences
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 
 
@@ -234,6 +235,30 @@ class ProfileFragment : Fragment(){
         userPreferences.setDob(newDob)
         userPreferences.setWeight(newWeight)
         userPreferences.setHeight(newHeight)
+
+        // siapkan data untuk kirim ke firebase
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            val db = FirebaseFirestore.getInstance()
+
+            val profileData = hashMapOf<String, Any>(
+                "name" to newName,
+                "gender" to selectedGender,
+                "dob" to newDob,
+                "height" to (newHeight.toFloatOrNull() ?: 0f),
+                "weight" to (newWeight.toFloatOrNull() ?: 0f)
+            )
+
+            // kirim ke cloud
+            db.collection("users").document(userId)
+                .set(profileData, com.google.firebase.firestore.SetOptions.merge())
+                .addOnSuccessListener {
+                    Toast.makeText(requireContext(), "Profil berhasil disimpan ke Cloud", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(requireContext(), "Gagal menyimpan ke Cloud. Data tersimpan di lokal.", Toast.LENGTH_SHORT).show()
+                }
+        }
 
         Toast.makeText(requireContext(), "Profil berhasil diperbarui", Toast.LENGTH_SHORT).show()
 

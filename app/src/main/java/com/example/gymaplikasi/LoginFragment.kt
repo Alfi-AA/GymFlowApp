@@ -190,9 +190,26 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         val nameFromCloud = document.getString("name") ?: "User"
                         val genderFromCloud = document.getString("gender") ?: "Male"
 
+                        //spesifik untuk ngecek DoB
+                        val dobRaw = document.get("dob")
+                        val dobFromCloud = when (dobRaw) {
+                            is String -> dobRaw
+                            is Number -> {
+                                val sdf = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault())
+                                sdf.format(java.util.Date(dobRaw.toLong()))
+                            }
+                            else -> ""
+                        }
+
+                        //ini diconvert dari float ke string
+                        val weightFromCloud = document.getDouble("weight")?.toFloat()?.toString() ?: ""
+                        val heightFromCloud = document.getDouble("height")?.toFloat()?.toString() ?: ""
 
                         userPreferences.saveUser(nameFromCloud)
                         userPreferences.setGender(genderFromCloud)
+                        userPreferences.setDob(dobFromCloud)
+                        userPreferences.setWeight(weightFromCloud)
+                        userPreferences.setHeight(heightFromCloud)
 
                         Toast.makeText(requireContext(), "Memulihkan data dari Cloud...", Toast.LENGTH_SHORT).show()
 

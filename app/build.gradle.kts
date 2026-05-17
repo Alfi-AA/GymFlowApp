@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.gymaplikasi"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -78,4 +78,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
+
+    // kalender Kizitonwose
+    implementation("com.kizitonwose.calendar:view:2.4.1")
 }
