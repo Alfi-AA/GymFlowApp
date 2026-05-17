@@ -13,10 +13,13 @@
 
     <!-- GymFlow Ranking -->
     <color name="rank_unranked">#00000000</color>
+    <color name="rank_iron">#64748B</color>
     <color name="rank_bronze">#A97142</color>
     <color name="rank_silver">#9CA3AF</color>
     <color name="rank_gold">#D4AF37</color>
     <color name="rank_platinum">#52A43C</color>
+    <color name="rank_diamond">#38BDF8</color>
+    <color name="rank_titanium">#F97316</color>
     <color name="rank_adamantium">#6B21A8</color>
     <color name="rank_mythril">#DC2626</color>
 </resources>

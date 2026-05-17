@@ -170,22 +170,19 @@
                             android:id="@+id/ivShouldersMuscleFront"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_muscle_front_male_shoulders"
-                            app:tint="@color/rank_gold" />
+                            android:src="@drawable/ic_muscle_front_male_shoulders" />
 
                         <ImageView
                             android:id="@+id/ivBicepsMuscle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_muscle_front_male_biceps"
-                            app:tint="@color/rank_mythril" />
+                            android:src="@drawable/ic_muscle_front_male_biceps" />
 
                         <ImageView
                             android:id="@+id/ivTricepsMuscleFront"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_muscle_front_male_triceps"
-                            app:tint="@color/rank_mythril" />
+                            android:src="@drawable/ic_muscle_front_male_triceps" />
 
 <!--                        <ImageView-->
 <!--                            android:id="@+id/ivForearmsMuscleFront"-->
@@ -198,29 +195,25 @@
                             android:id="@+id/ivChestMuscle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_muscle_front_male_chest"
-                            app:tint="@color/rank_gold" />
+                            android:src="@drawable/ic_muscle_front_male_chest" />
 
                         <ImageView
                             android:id="@+id/ivAbsMuscle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_muscle_front_male_abs"
-                            app:tint="@color/rank_gold" />
+                            android:src="@drawable/ic_muscle_front_male_abs" />
 
                         <ImageView
                             android:id="@+id/ivQuadsMuscleFront"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_muscle_front_male_quads"
-                            app:tint="@color/rank_gold" />
+                            android:src="@drawable/ic_muscle_front_male_quads" />
 
                         <ImageView
                             android:id="@+id/ivCalvesMuscleFront"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_muscle_front_male_calves"
-                            app:tint="@color/rank_gold" />
+                            android:src="@drawable/ic_muscle_front_male_calves" />
 
                     </FrameLayout>
                     
@@ -239,22 +232,19 @@
                             android:id="@+id/ivBackMuscle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_muscle_back_male_back"
-                            app:tint="@color/rank_silver" />
+                            android:src="@drawable/ic_muscle_back_male_back" />
 
                         <ImageView
                             android:id="@+id/ivShouldersMuscleBack"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_muscle_back_male_shoulders"
-                            app:tint="@color/rank_platinum" />
+                            android:src="@drawable/ic_muscle_back_male_shoulders" />
 
                         <ImageView
                             android:id="@+id/ivTricepsMuscleBack"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_muscle_back_male_triceps"
-                            app:tint="@color/rank_platinum" />
+                            android:src="@drawable/ic_muscle_back_male_triceps" />
 
 <!--                        <ImageView-->
 <!--                            android:id="@+id/ivForearmsMuscleBack"-->
@@ -267,29 +257,25 @@
                             android:id="@+id/ivQuadsMuscleBack"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_muscle_back_male_quads"
-                            app:tint="@color/rank_bronze" />
+                            android:src="@drawable/ic_muscle_back_male_quads" />
 
                         <ImageView
                             android:id="@+id/ivGlutesMuscle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_muscle_back_male_glutes"
-                            app:tint="@color/rank_bronze" />
+                            android:src="@drawable/ic_muscle_back_male_glutes" />
 
                         <ImageView
                             android:id="@+id/ivHamstringMuscle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_muscle_back_male_hamstring"
-                            app:tint="@color/rank_bronze" />
+                            android:src="@drawable/ic_muscle_back_male_hamstring" />
 
                         <ImageView
                             android:id="@+id/ivCalvesMuscleBack"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_muscle_back_male_calves"
-                            app:tint="@color/rank_bronze" />
+                            android:src="@drawable/ic_muscle_back_male_calves" />
 
                     </FrameLayout>
                 </LinearLayout>
@@ -325,20 +311,8 @@
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/rank_bronze" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Bronze"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/rank_iron" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Iron" android:textColor="@color/white" android:textSize="12sp" android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -347,20 +321,8 @@
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/rank_silver" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Silver"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/rank_bronze" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Bronze" android:textColor="@color/white" android:textSize="12sp" android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -369,96 +331,87 @@
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/rank_gold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Gold"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/rank_silver" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Silver" android:textColor="@color/white" android:textSize="12sp" android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="24dp"
-                android:baselineAligned="false">
-
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="24dp"
+                    android:baselineAligned="false">
 
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/rank_platinum" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Platinum"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/rank_gold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Gold" android:textColor="@color/white" android:textSize="12sp" android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/rank_platinum" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Platinum" android:textColor="@color/white" android:textSize="12sp" android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/rank_diamond" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Diamond" android:textColor="@color/white" android:textSize="12sp" android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="24dp"
+                    android:baselineAligned="false">
 
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/rank_adamantium" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Adamantium"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/rank_titanium" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Titanium" android:textColor="@color/white" android:textSize="12sp" android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/rank_adamantium" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Adamantium" android:textColor="@color/white" android:textSize="12sp" android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/rank_mythril" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Mythril" android:textColor="@color/white" android:textSize="12sp" android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/rank_mythril" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Mythril"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

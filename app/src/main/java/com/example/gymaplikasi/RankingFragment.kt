@@ -127,13 +127,16 @@ class RankingFragment : Fragment() {
     // LOGIKA UNTUK MUSCLE HEATMAP
     private fun getColorForScore(score: Int): Int {
         val colorRes = when (score) {
-            in 90..Int.MAX_VALUE -> R.color.rank_mythril
-            in 80..89 -> R.color.rank_adamantium
-            in 60..79 -> R.color.rank_platinum
-            in 40..59 -> R.color.rank_gold
-            in 20..39 -> R.color.rank_silver
-            in 1..19 -> R.color.rank_bronze
-            else -> R.color.rank_unranked
+            in 100..Int.MAX_VALUE -> R.color.rank_mythril // 100%
+            in 88..99 -> R.color.rank_adamantium
+            in 75..87 -> R.color.rank_titanium
+            in 62..74 -> R.color.rank_diamond
+            in 50..61 -> R.color.rank_platinum // RATA-RATA
+            in 38..49 -> R.color.rank_gold
+            in 25..37 -> R.color.rank_silver
+            in 12..24 -> R.color.rank_bronze
+            in 1..11 -> R.color.rank_iron // Pangkat Terendah
+            else -> R.color.rank_unranked // 0
         }
         return ContextCompat.getColor(requireContext(), colorRes)
     }
@@ -169,24 +172,30 @@ class RankingFragment : Fragment() {
     // Logika untuk list ranking
     private fun getIconForScore(score: Int): Int {
         return when (score) {
-            in 90..Int.MAX_VALUE -> R.drawable.rank_mythril
-            in 80..89 -> R.drawable.rank_adamantium
-            in 60..79 -> R.drawable.rank_platinum
-            in 40..59 -> R.drawable.rank_gold
-            in 20..39 -> R.drawable.rank_silver
-            in 1..19 -> R.drawable.rank_bronze
-            else -> R.drawable.rank_bronze
+            in 100..Int.MAX_VALUE -> R.drawable.rank_mythril
+            in 88..99 -> R.drawable.rank_adamantium
+            in 75..87 -> R.drawable.rank_titanium
+            in 62..74 -> R.drawable.rank_diamond
+            in 50..61 -> R.drawable.rank_platinum
+            in 38..49 -> R.drawable.rank_gold
+            in 25..37 -> R.drawable.rank_silver
+            in 12..24 -> R.drawable.rank_bronze
+            in 1..11 -> R.drawable.rank_iron
+            else -> R.drawable.rank_iron // Jika 0 tetap kasih Iron tapi mungkin abu-abu
         }
     }
 
     private fun getNameForScore(score: Int): String {
         return when (score) {
-            in 90..Int.MAX_VALUE -> "Mythril"
-            in 80..89 -> "Adamantium"
-            in 60..79 -> "Platinum"
-            in 40..59 -> "Gold"
-            in 20..39 -> "Silver"
-            in 1..19 -> "Bronze"
+            in 100..Int.MAX_VALUE -> "Mythril"
+            in 88..99 -> "Adamantium"
+            in 75..87 -> "Titanium"
+            in 62..74 -> "Diamond"
+            in 50..61 -> "Platinum"
+            in 38..49 -> "Gold"
+            in 25..37 -> "Silver"
+            in 12..24 -> "Bronze"
+            in 1..11 -> "Iron"
             else -> "Unranked"
         }
     }

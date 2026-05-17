@@ -16,18 +16,18 @@ import kotlinx.coroutines.launch
 
 class RankingViewModel(private val gymLogDao: GymLogDao) : ViewModel() {
 
-    //1. Wadah pengampung data untuk UI
+    // Wadah pengampung data untuk UI
     private val _upperBodyScores = MutableLiveData<Map<Muscle, Int>>()
     val upperBodyScores: LiveData<Map<Muscle, Int>> = _upperBodyScores
 
     private val _lowerBodyScores = MutableLiveData<Map<Muscle, Int>>()
     val lowerBodyScores: LiveData<Map<Muscle, Int>> = _lowerBodyScores
 
-    //2. Wadah untuk list ranking
+    // Wadah untuk list ranking
     private val _muscleProgressList = MutableLiveData<List<ProgressListItem.MuscleHeader>>()
     val muscleProgressList: LiveData<List<ProgressListItem.MuscleHeader>> = _muscleProgressList
 
-    //2. Fungsi untuk mulai menghitung
+    // Fungsi untuk mulai menghitung
     fun calculateScores(userGender: String) {
         val myUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
@@ -136,12 +136,15 @@ class RankingViewModel(private val gymLogDao: GymLogDao) : ViewModel() {
     // fungsi penentu target rank selanjutnya
     private fun getNextRankTarget(currentScore: Int): Pair<String, Int> {
         return when {
-            currentScore < 20 -> Pair("Silver", 20)
-            currentScore < 40 -> Pair("Gold", 40)
-            currentScore < 60 -> Pair("Platinum", 60)
-            currentScore < 80 -> Pair("Adamantium", 80)
-            currentScore < 90 -> Pair("Mythril", 90)
-            else -> Pair("Maxed", 100) // Jika sudah Mythril / 100%
+            currentScore < 12 -> Pair("Bronze", 12)
+            currentScore < 25 -> Pair("Silver", 25)
+            currentScore < 38 -> Pair("Gold", 38)
+            currentScore < 50 -> Pair("Platinum", 50)     // TITIK TENGAH (Rata-rata Gym)
+            currentScore < 62 -> Pair("Diamond", 62)
+            currentScore < 75 -> Pair("Titanium", 75)
+            currentScore < 88 -> Pair("Adamantium", 88)
+            currentScore < 100 -> Pair("Mythril", 100)
+            else -> Pair("Maxed Out", 100) // Jika sudah melampaui Mythril
         }
     }
 }
