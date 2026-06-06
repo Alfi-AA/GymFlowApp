@@ -81,4 +81,7 @@ dependencies {
 
     // kalender Kizitonwose
     implementation("com.kizitonwose.calendar:view:2.4.1")
+
+    // TAMBAHKAN INI UNTUK TUTORIAL COACH MARKS
+    implementation("com.github.deano2390:MaterialShowcaseView:1.3.4")
 }

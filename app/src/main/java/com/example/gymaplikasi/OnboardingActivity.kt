@@ -52,10 +52,22 @@ class OnboardingActivity : AppCompatActivity() {
                 showFragment(currentStep)
             } else {
                 val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return@setOnClickListener
+                // Menyimpan ke firestore
                 viewModel.saveProfileToDatabase(userId) {
+                    // Menyimoan ke SharedPreference
                     val userPrefs = com.example.gymaplikasi.utils.UserPreferences(this@OnboardingActivity)
                     userPrefs.saveUser(viewModel.name.value)
                     userPrefs.setGender(viewModel.gender.value)
+                    userPrefs.setDob(viewModel.dob.value.toString())
+
+                    // ambil nilai float dan ubah ke string
+                    val weightVal = viewModel.weight.value
+                    val heightVal = viewModel.height.value
+                    val weightStr = if (weightVal % 1f == 0f) weightVal.toInt().toString() else weightVal.toString()
+                    val heightStr = if (heightVal % 1f == 0f) heightVal.toInt().toString() else heightVal.toString()
+
+                    userPrefs.setWeight(weightStr)
+                    userPrefs.setHeight(heightStr)
 
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()

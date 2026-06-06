@@ -23,8 +23,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 
-
-class ProfileFragment : Fragment(){
+class ProfileFragment : Fragment() {
 
     private lateinit var userPreferences: UserPreferences
 
@@ -114,7 +113,8 @@ class ProfileFragment : Fragment(){
     private fun loadUserData() {
         val name = userPreferences.getUserName() ?: "User"
         val gender = userPreferences.getGender() ?: "Male"
-        val dob = userPreferences.getDob() ?: ""
+        val dobRaw = userPreferences.getDob() ?: ""
+        val dob = formatDob(dobRaw)
         val weight = userPreferences.getWeight() ?: ""
         val height = userPreferences.getHeight() ?: ""
 
@@ -312,7 +312,27 @@ class ProfileFragment : Fragment(){
         datePicker.show()
     }
 
-    // peringatan kehilagnan data
+    // translate tanggal
+    private fun formatDob(dobStr: String): String {
+        if (dobStr.isEmpty()) return ""
+
+        // Cek apakah dobStr murni berisi Timestamp dari Onboarding
+        return if (dobStr.toLongOrNull() != null) {
+            try {
+                // Ubah Timestamp ke format "DD/MM/YYYY"
+                val date = java.util.Date(dobStr.toLong())
+                val format = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault())
+                format.format(date)
+            } catch (e: Exception) {
+                dobStr // Jika gagal, kembalikan apa adanya
+            }
+        } else {
+            // Jika formatnya sudah "DD/MM/YYYY" biarkan saja
+            dobStr
+        }
+    }
+
+    // peringatan kehilangan data
     private fun showWarningDialog(onConfirmDiscard: () -> Unit) {
         AlertDialog.Builder(requireContext())
             .setTitle("Buang Perubahan?")

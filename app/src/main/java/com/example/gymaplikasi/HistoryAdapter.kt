@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gymaplikasi.data.GymLog
+import com.example.gymaplikasi.domain.exerciseToMuscleMap
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -24,6 +25,7 @@ class HistoryAdapter(private var logList: List<GymLog>) :
         val tvExerciseName: TextView = view.findViewById(R.id.tvExerciseName)
         val tvWeight: TextView = view.findViewById(R.id.tvWeight)
         val tvReps: TextView = view.findViewById(R.id.tvReps)
+        val tvMuscleGroup: TextView = view.findViewById(R.id.tvSubDetail)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
@@ -43,6 +45,15 @@ class HistoryAdapter(private var logList: List<GymLog>) :
         // Set Data Lainnya
         holder.tvExerciseName.text = log.exercise
 
+        // ambil data otot dari Map berdasarkan nama latihan
+        val targetData = exerciseToMuscleMap[log.exercise]
+        if (targetData != null) {
+            val muscleName = targetData.muscle.name.lowercase().replaceFirstChar { it.uppercase() }
+            holder.tvMuscleGroup.text = "$muscleName Group"
+        } else {
+            // kalo ga ditemuin di Map
+            holder.tvMuscleGroup.text = "General"
+        }
         // Format angka (hapus .0 jika bulat)
         val weightText = if (log.weight % 1f == 0f) log.weight.toInt().toString() else log.weight.toString()
         holder.tvWeight.text = "$weightText kg"

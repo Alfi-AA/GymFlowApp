@@ -239,6 +239,7 @@
 
                 <!-- Input Row: Beban & Reps -->
                 <LinearLayout
+                    android:id="@+id/llInputRow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"

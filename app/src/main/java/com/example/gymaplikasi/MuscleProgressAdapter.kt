@@ -108,18 +108,24 @@ class MuscleProgressAdapter(
 
         fun bind(child: ProgressListItem.ExerciseChild) {
             tvName.text = child.exerciseName
-            tvWeight.text = "${child.weightKg} Kg"
+            val weightStr = if (child.weightKg.toFloat() % 1f == 0f) child.weightKg.toInt().toString() else child.weightKg.toString()
+            tvWeight.text = "$weightStr Kg"
 
-            pbProgress.progress = child.score
             pbProgress.progressTintList = ColorStateList.valueOf(getScoreColor(child.score))
             ivRank.setImageResource(getRankIcon(child.score))
 
             if (child.score >= 90) {
                 // Jika sudah Mythril (Rank Tertinggi)
+                pbProgress.max = 100
+                pbProgress.progress = 100
+
                 tvNextTarget.text = "Max Rank Reached! 🔥"
                 tvNextTarget.setTextColor(android.graphics.Color.parseColor("#B1EE2E")) // Hijau Stabilo
             } else {
                 // Jika masih ada target berikutnya
+                pbProgress.max = child.nextRankKg.toInt()
+                pbProgress.progress = child.weightKg.toInt()
+
                 tvNextTarget.text = "Target: ${child.nextRankKg} Kg ke ${child.nextRankName}"
                 tvNextTarget.setTextColor(android.graphics.Color.parseColor("#888888")) // Abu-abu italic
             }

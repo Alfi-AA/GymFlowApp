@@ -28,6 +28,10 @@ import java.util.Calendar
 import com.example.gymaplikasi.utils.UserPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import android.widget.LinearLayout
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
 
 class HomeFragment : Fragment() {
 
@@ -39,6 +43,9 @@ class HomeFragment : Fragment() {
     private lateinit var etReps: EditText
     private lateinit var btnSave: Button
     private var validExerciseNames: List<String> = emptyList()
+
+    private lateinit var llInputRow: LinearLayout
+    private lateinit var menuExercise: View
 
     private lateinit var ivNeglectedMuscleIcon: ImageView
     private lateinit var tvNeglectedMuscleName: TextView
@@ -77,6 +84,9 @@ class HomeFragment : Fragment() {
         etReps = view.findViewById(R.id.etReps)
         btnSave = view.findViewById(R.id.btnSaveRecord)
 
+        llInputRow = view.findViewById(R.id.llInputRow)
+        menuExercise = view.findViewById(R.id.menuExercise)
+
         ivNeglectedMuscleIcon = view.findViewById(R.id.ivNeglectedMuscleIcon)
         tvNeglectedMuscleName = view.findViewById(R.id.tvNeglectedMuscleName)
         ivLastWorkoutRank = view.findViewById(R.id.ivLastWorkoutRank)
@@ -91,6 +101,51 @@ class HomeFragment : Fragment() {
         btnSave.setOnClickListener {
             saveWorkoutLog()
         }
+
+        showTutorialSequence()
+    }
+
+    private fun showTutorialSequence() {
+        val config = ShowcaseConfig()
+        config.delay = 500
+
+        val sequence = MaterialShowcaseSequence(requireActivity(), "TutorialHome")
+        sequence.setConfig(config)
+
+        // HIGHLIGHT 1: Dropdown Latihan
+        sequence.addSequenceItem(
+            MaterialShowcaseView.Builder(requireActivity())
+                .setTarget(menuExercise)
+                .setDismissText("LANJUT")
+                .setContentText("Langkah 1: Pilih jenis alat atau latihanmu dari daftar ini.")
+                .withRectangleShape(true) // Membentuk kotak
+                .setMaskColour(0xDD12140e.toInt()) // Warna background gelap transparan
+                .build()
+        )
+
+        // HIGHLIGHT 2: Kotak Input Beban & Reps
+        sequence.addSequenceItem(
+            MaterialShowcaseView.Builder(requireActivity())
+                .setTarget(llInputRow)
+                .setDismissText("MENGERTI")
+                .setContentText("Langkah 2: Masukkan beban (KG) dan jumlah repetisi yang baru saja kamu lakukan.")
+                .withRectangleShape(true)
+                .setMaskColour(0xDD12140e.toInt())
+                .build()
+        )
+
+        // HIGHLIGHT 3: Tombol Simpan (Target Hijau Bawah)
+        sequence.addSequenceItem(
+            MaterialShowcaseView.Builder(requireActivity())
+                .setTarget(btnSave)
+                .setDismissText("SIAP LATIHAN!")
+                .setContentText("Langkah 3: Simpan set-mu untuk melihat progres dan mendapatkan rank!")
+                .withRectangleShape(true)
+                .setMaskColour(0xDD12140e.toInt())
+                .build()
+        )
+
+        sequence.start()
     }
 
     // Menampilkan nama user dan target berat badan dari SharedPreferences
@@ -270,12 +325,16 @@ class HomeFragment : Fragment() {
 
     private fun getRankIconForScore(score: Int): Int {
         return when (score) {
-            in 90..Int.MAX_VALUE -> R.drawable.rank_mythril
-            in 80..89 -> R.drawable.rank_adamantium
-            in 60..79 -> R.drawable.rank_platinum
-            in 40..59 -> R.drawable.rank_gold
-            in 20..39 -> R.drawable.rank_silver
-            else -> R.drawable.rank_bronze
+            in 100..Int.MAX_VALUE -> R.drawable.rank_mythril
+            in 88..99 -> R.drawable.rank_adamantium
+            in 75..87 -> R.drawable.rank_titanium
+            in 62..74 -> R.drawable.rank_diamond
+            in 50..61 -> R.drawable.rank_platinum
+            in 38..49 -> R.drawable.rank_gold
+            in 25..37 -> R.drawable.rank_silver
+            in 12..24 -> R.drawable.rank_bronze
+            in 1..11 -> R.drawable.rank_iron
+            else -> R.drawable.rank_iron // Jika 0 tetap kasih Iron tapi mungkin abu-abu
         }
     }
 

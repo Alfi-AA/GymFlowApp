@@ -48,9 +48,25 @@ class AuthActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.authFragmentContainer, resetFragment)
                         .commit()
+                } else if (mode == "verifyEmail" && oobCode != null){
+                    Toast.makeText(this, "Memverifikasi email Anda...", Toast.LENGTH_SHORT).show()
+
+                    // Tembak langsung kode verifikasinya ke Firebase Auth
+                    com.google.firebase.auth.FirebaseAuth.getInstance().applyActionCode(oobCode)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(this, "Email berhasil diverifikasi! Silakan masuk.", Toast.LENGTH_LONG).show()
+                            } else {
+                                Toast.makeText(this, "Verifikasi gagal atau link sudah kedaluwarsa.", Toast.LENGTH_LONG).show()
+                            }
+
+                            // Setelah verifikasi selesai (sukses/gagal), arahkan ke LoginFragment
+                            supportFragmentManager.beginTransaction()
+                                .replace(R.id.authFragmentContainer, LoginFragment())
+                                .commit()
+                        }
                 } else {
-                    Toast.makeText(this, "Link tidak valid", Toast.LENGTH_SHORT).show()
-                    // ini kalo linknya tidak sesuai untuk lupa password, jadinya ttp kelempar ke login
+                    Toast.makeText(this, "Link tidak valid atau tidak dikenali", Toast.LENGTH_SHORT).show()
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.authFragmentContainer, LoginFragment())
                         .commit()
